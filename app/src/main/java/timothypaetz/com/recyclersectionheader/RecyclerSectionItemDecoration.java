@@ -49,7 +49,7 @@ public class RecyclerSectionItemDecoration extends RecyclerView.ItemDecoration {
                          state);
 
         if (headerView == null) {
-            headerView = getStickyHeader(parent);
+            headerView = inflateHeaderView(parent);
             header = (TextView) headerView.findViewById(R.id.list_item_section_text);
             fixLayoutSize(header,
                           parent);
@@ -62,7 +62,7 @@ public class RecyclerSectionItemDecoration extends RecyclerView.ItemDecoration {
 
             CharSequence title = sectionCallback.getSectionHeader(position);
             header.setText(title);
-            if (!previousHeader.equals(title)) {
+            if (!previousHeader.equals(title) || sectionCallback.isSection(position)) {
                 drawStickyHeader(c,
                                  child,
                                  headerView);
@@ -85,7 +85,7 @@ public class RecyclerSectionItemDecoration extends RecyclerView.ItemDecoration {
         c.restore();
     }
 
-    private View getStickyHeader(RecyclerView parent) {
+    private View inflateHeaderView(RecyclerView parent) {
         return LayoutInflater.from(parent.getContext())
                              .inflate(R.layout.recycler_section_header,
                                       parent,
