@@ -61,15 +61,15 @@ public class RecyclerSectionItemDecoration extends RecyclerView.ItemDecoration {
             CharSequence title = sectionCallback.getSectionHeader(position);
             header.setText(title);
             if (!previousHeader.equals(title) || sectionCallback.isSection(position)) {
-                drawStickyHeader(c,
-                                 child,
-                                 headerView);
+                drawHeader(c,
+                           child,
+                           headerView);
                 previousHeader = title;
             }
         }
     }
 
-    private void drawStickyHeader(Canvas c, View child, View headerView) {
+    private void drawHeader(Canvas c, View child, View headerView) {
         c.save();
         if (sticky) {
             c.translate(0,
