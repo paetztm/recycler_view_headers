@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import java.util.List;
 
 /**
  * Created by paetztm on 2/6/2017.
@@ -15,19 +14,19 @@ import java.util.List;
 
 public class RecyclerSectionItemDecoration extends RecyclerView.ItemDecoration {
 
-    private final int           headerOffset;
-    private final boolean       sticky;
-    private       View          headerView;
-    private       TextView      header;
-    private       List<Section> sections;
+    private final int             headerOffset;
+    private final boolean         sticky;
+    private       View            headerView;
+    private       TextView        header;
+    private       SectionCallback sectionCallback;
 
     public RecyclerSectionItemDecoration(int headerHeight, boolean sticky) {
         headerOffset = headerHeight;
         this.sticky = sticky;
     }
 
-    public void setSections(List<Section> sections) {
-        this.sections = sections;
+    public void setCallback(SectionCallback sectionCallback) {
+        this.sectionCallback = sectionCallback;
     }
 
     @Override
@@ -38,8 +37,7 @@ public class RecyclerSectionItemDecoration extends RecyclerView.ItemDecoration {
                              state);
 
         int pos = parent.getChildAdapterPosition(view);
-        if (pos < sections.size() && sections.get(pos)
-                                             .isSection()) {
+        if (sectionCallback.isSection(pos)) {
             outRect.top = headerOffset;
         }
     }
@@ -62,16 +60,13 @@ public class RecyclerSectionItemDecoration extends RecyclerView.ItemDecoration {
             View child = parent.getChildAt(i);
             final int position = parent.getChildAdapterPosition(child);
 
-            if (position < sections.size()) {
-                CharSequence title = sections.get(position)
-                                             .getTitle();
-                header.setText(title);
-                if (!previousHeader.equals(title)) {
-                    drawStickyHeader(c,
-                                     child,
-                                     headerView);
-                    previousHeader = title;
-                }
+            CharSequence title = sectionCallback.getSectionHeader(position);
+            header.setText(title);
+            if (!previousHeader.equals(title)) {
+                drawStickyHeader(c,
+                                 child,
+                                 headerView);
+                previousHeader = title;
             }
         }
     }
@@ -133,23 +128,11 @@ public class RecyclerSectionItemDecoration extends RecyclerView.ItemDecoration {
                     view.getMeasuredHeight());
     }
 
-    public static class Section {
+    public interface SectionCallback {
 
-        private final CharSequence title;
-        private final boolean      isSectionHeader;
+        boolean isSection(int position);
 
-        public Section(CharSequence title, boolean isSectionHeader) {
-            this.title = title;
-            this.isSectionHeader = isSectionHeader;
-        }
-
-        public CharSequence getTitle() {
-            return title;
-        }
-
-        public boolean isSection() {
-            return isSectionHeader;
-        }
+        CharSequence getSectionHeader(int position);
     }
 }
 
