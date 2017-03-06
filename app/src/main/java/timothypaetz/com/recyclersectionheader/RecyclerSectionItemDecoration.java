@@ -16,16 +16,14 @@ public class RecyclerSectionItemDecoration extends RecyclerView.ItemDecoration {
 
     private final int             headerOffset;
     private final boolean         sticky;
-    private       View            headerView;
-    private       TextView        header;
-    private       SectionCallback sectionCallback;
+    private final SectionCallback sectionCallback;
 
-    public RecyclerSectionItemDecoration(int headerHeight, boolean sticky) {
+    private View     headerView;
+    private TextView header;
+
+    public RecyclerSectionItemDecoration(int headerHeight, boolean sticky, SectionCallback sectionCallback) {
         headerOffset = headerHeight;
         this.sticky = sticky;
-    }
-
-    public void setCallback(SectionCallback sectionCallback) {
         this.sectionCallback = sectionCallback;
     }
 
