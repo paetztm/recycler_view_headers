@@ -2,6 +2,7 @@ package timothypaetz.com.recyclersectionheader;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +22,7 @@ public class RecyclerSectionItemDecoration extends RecyclerView.ItemDecoration {
     private View     headerView;
     private TextView header;
 
-    public RecyclerSectionItemDecoration(int headerHeight, boolean sticky, SectionCallback sectionCallback) {
+    public RecyclerSectionItemDecoration(int headerHeight, boolean sticky, @NonNull SectionCallback sectionCallback) {
         headerOffset = headerHeight;
         this.sticky = sticky;
         this.sectionCallback = sectionCallback;
