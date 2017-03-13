@@ -50,7 +50,7 @@ public class RecyclerSectionItemDecoration extends RecyclerView.ItemDecoration {
         if (headerView == null) {
             headerView = inflateHeaderView(parent);
             header = (TextView) headerView.findViewById(R.id.list_item_section_text);
-            fixLayoutSize(header,
+            fixLayoutSize(headerView,
                           parent);
         }
 
@@ -92,22 +92,15 @@ public class RecyclerSectionItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     /**
+     * Measures the header view to make sure its size is greater than 0 and will be drawn
      * https://yoda.entelect.co.za/view/9627/how-to-android-recyclerview-item-decorations
      */
     private void fixLayoutSize(View view, ViewGroup parent) {
-
-        // Create a width and height spec using the parent as an example:
-        // For width we make sure that the item matches exactly what it measures from the parent.
-        //  IE if layout says to match_parent it will be exactly parent.getWidth()
         int widthSpec = View.MeasureSpec.makeMeasureSpec(parent.getWidth(),
                                                          View.MeasureSpec.EXACTLY);
-        // For the height we are going to create a spec that says it doesn't really care what is
-        // calculated,
-        //  even if its larger than the screen
         int heightSpec = View.MeasureSpec.makeMeasureSpec(parent.getHeight(),
-                                                          View.MeasureSpec.EXACTLY);
+                                                          View.MeasureSpec.UNSPECIFIED);
 
-        // Get the child specs using the parent spec and the padding the parent has
         int childWidth = ViewGroup.getChildMeasureSpec(widthSpec,
                                                        parent.getPaddingLeft() + parent.getPaddingRight(),
                                                        view.getLayoutParams().width);
@@ -115,12 +108,9 @@ public class RecyclerSectionItemDecoration extends RecyclerView.ItemDecoration {
                                                         parent.getPaddingTop() + parent.getPaddingBottom(),
                                                         view.getLayoutParams().height);
 
-        // Finally we measure the sizes with the actual view which does margin and padding
-        // changes to the sizes calculated
         view.measure(childWidth,
                      childHeight);
 
-        // And now we setup the layout for the view to ensure it has the correct sizes.
         view.layout(0,
                     0,
                     view.getMeasuredWidth(),
