@@ -1,4 +1,4 @@
-# recycler_view_headers
+
 Simple Recycler View Section Header implementation
 
 License
